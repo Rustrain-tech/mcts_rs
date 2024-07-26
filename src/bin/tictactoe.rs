@@ -58,15 +58,20 @@ impl GameState for TicTacToe {
             [2, 4, 6],
         ];
         for line in lines.iter() {
-            if let Some(player) = self.board[line[0]] {
-                if line.iter().all(|&index| self.board[index] == Some(player)) {
-                    return Some(match player {
-                        Player::X => 1,
-                        Player::O => -1,
-                    });
-                }
+            if line
+                .iter()
+                .all(|&index| self.board[index] == Some(Player::X))
+            {
+                return Some(1);
+            } else if line
+                .iter()
+                .all(|&index| self.board[index] == Some(Player::O))
+            {
+                return Some(-1);
             }
         }
+
+        // draw
         if self.board.iter().all(|&cell| cell.is_some()) {
             return Some(0);
         }
