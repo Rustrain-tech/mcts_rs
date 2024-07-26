@@ -94,11 +94,13 @@ fn main() {
         print_board(&game);
 
         if !game.is_terminal() {
-            println!("Enter your move (0-8):");
+            println!("Enter your action (<row>-<column>):");
             let mut input = String::new();
             std::io::stdin().read_line(&mut input).unwrap();
-            let human_move: usize = input.trim().parse().unwrap();
-            game.make_move(human_move);
+            let row = input.trim().chars().next().unwrap().to_digit(10).unwrap() as usize - 1;
+            let column = input.trim().chars().nth(2).unwrap().to_digit(10).unwrap() as usize - 1;
+            let action = row * 3 + column;
+            game.make_move(action);
             print_board(&game);
         }
 
@@ -114,7 +116,14 @@ fn main() {
 }
 
 fn print_board(game: &TicTacToe) {
+    print!("  ");
+    for i in 1..4 {
+        print!("{} ", i);
+    }
+    println!();
+
     for i in 0..3 {
+        print!("{} ", i + 1);
         for j in 0..3 {
             match game.board[i * 3 + j] {
                 Some(Player::X) => print!("X "),
